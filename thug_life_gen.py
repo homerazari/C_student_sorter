@@ -4,8 +4,17 @@ from subprocess import Popen, PIPE, check_output
 import os
 from sys import argv
 
+# 'Thug Life' meme generator. The program is designed to work in one function. Keep in mind it is currently not 
+# designed to remove the intermediate files. 
+# The program is also dependent on an audio file and 2 image files to be present in the folder.
+# Although mpeg2 is a lossy format. I used it for the intermediate files since ffmpeg works best with mpeg
+# format. Using a lossless format made concating with ffmpeg difficult.
+
 def thug_func(input_thug):
 
+	''' function to take an input and concatenate 2 videos into 1. 
+	
+	Source > 2 intermediate files > final encoded file.'''
 	input_thug = argv
 	print input_thug
 	count = 'ffprobe -show_streams -count_frames -i ' + input_thug[1]
@@ -30,8 +39,8 @@ def thug_func(input_thug):
 	output_2.wait()
 
 	lf_load = Image.open('last_f.png', 'r')
-	alpha_load = Image.open('alpha.png', 'r')
-	bg_load = Image.open('bg.png', 'r')
+	alpha_load = Image.open('alpha.png', 'r') # alpha image that gives the image a yellow tint
+	bg_load = Image.open('bg.png', 'r') # alpha image with 'thug life' text
 	alpha_load = alpha_load.resize(lf_load.size, Image.ANTIALIAS)
 	bg_load = bg_load.resize(lf_load.size, Image.ANTIALIAS)	
 	comp_pre = Image.composite(lf_load, alpha_load, alpha_load)
